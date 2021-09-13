@@ -3,7 +3,7 @@ type PathMenu = { path: string, label: string, icon: string };
 export type Menu = HeaderMenu | PathMenu;
 
 export const baseMenus: Menu[] = [
-  { path: '/app', label: 'dashboard', icon: 'dashboard' },
+  { path: '/app/dashboard', label: 'dashboard', icon: 'dashboard' },
   { separator: true, label: 'master' },
   { path: '/app/pcat', label: 'kategori barang', icon: 'category' },
   { path: '/app/ocat', label: 'kategori beban operasi', icon: 'category' },

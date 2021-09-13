@@ -10,7 +10,7 @@
           aria-label="Menu"
           @click="toggleLeftDrawer"
         />  
-        <div class="text-overline" style="line-height: unset;">12 April, 2021</div>
+        <div class="text-overline" style="line-height: unset;">{{formattedToday}}</div>
         <q-space/>
 
         <q-btn-dropdown flat icon="person" :label="user.first_name">
@@ -59,7 +59,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, inject } from 'vue';
+import { 
+  defineComponent, 
+  ref, 
+  inject,
+  computed
+} from 'vue';
+import { format } from 'date-fns'
+import { id as localeID } from 'date-fns/locale'
 import { User } from 'src/models/user.model';
 import { baseMenus, adminMenus } from 'src/data/commons/menu.data';
 import { useRouter } from 'vue-router'
@@ -79,6 +86,11 @@ export default defineComponent({
     const user = inject<User>('user');
     const router = useRouter()
 
+    const formattedToday = computed(() => {
+      const now = new Date()
+      return format(now, 'eeee, d MMMM yyyy', { locale: localeID })
+    })
+
     function logout() {
       localStorage.removeItem('token')
       router.replace('/')
@@ -94,7 +106,8 @@ export default defineComponent({
       baseMenus,
       data: appData,
       user,
-      logout
+      logout,
+      formattedToday
     };
   },
 });
