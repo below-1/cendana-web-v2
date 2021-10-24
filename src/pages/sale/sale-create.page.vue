@@ -49,6 +49,10 @@ import { BASE_API_URL, BASE_APP_URL } from 'src/data/sale'
 import { User } from 'src/models/user.model'
 import { useRouter } from 'vue-router'
 
+const bulanOptions = [
+  {  }
+]
+
 type Payload = {
   targetUser: null | User;
   description: string;

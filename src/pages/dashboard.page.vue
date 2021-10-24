@@ -77,6 +77,7 @@ export default defineComponent({
     })
     const quasar = useQuasar()
     const report1 = ref<any[]>([])
+    const delays = ref<any[]>([])
 
     async function loadReport1(params: { year: number, month: number }) {
       try {
@@ -92,6 +93,23 @@ export default defineComponent({
         quasar.notify({
           type: 'negative',
           message: 'Gagal mengambil data rangkuman pembelian dan penjualan'
+        })
+      }
+    }
+
+    async function loadDelaysDueToday() {
+      try {
+        const response = await api.get(`/v1/api/delays/due-today`, {
+          params: {
+            kind: 'RECEIVABLE'
+          }
+        })
+        delays.value = response.data
+      } catch (err) {
+        console.log(err)
+        quasar.notify({
+          type: 'negative',
+          message: 'Gagal mengambil data piutang'
         })
       }
     }
@@ -122,6 +140,7 @@ export default defineComponent({
 
     onMounted(() => {
       loadReport1({ ...report1Params })
+      loadDelaysDueToday()
     })
 
     const testData = {

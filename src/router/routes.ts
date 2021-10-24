@@ -51,6 +51,18 @@ const routes: RouteRecordRaw[] = [
         props: true
       },
 
+      { path: 'invcat', component: () => import('pages/inv-cat/invcat-list.page.vue') },
+      { path: 'invcat/create', component: () => import('pages/inv-cat/invcat-create.page.vue') },
+      { path: 'invcat/:id/update', component: () => import('pages/inv-cat/invcat-update.page.vue'), props: true },
+      
+      { path: 'investment', component: () => import('pages/investment/investment-list.page.vue') },
+      { path: 'investment/create', component: () => import('pages/investment/investment-create.page.vue') },
+      { path: 'investment/:id/update', component: () => import('pages/investment/investment-update.page.vue'), props: true },
+
+      { path: 'equity', component: () => import('pages/equity/equity-list.page.vue') },
+      { path: 'equity/create', component: () => import('pages/equity/equity-create.page.vue') },
+      { path: 'equity/:id/update', component: () => import('pages/equity/equity-update.page.vue'), props: true },
+
       { path: 'tool', component: () => import('pages/tool/tool-list.page.vue') },
       { path: 'tool/create', component: () => import('pages/tool/tool-create.page.vue') },
       { path: 'tool/:id/update', component: () => import('pages/tool/tool-update.page.vue'), props: true },

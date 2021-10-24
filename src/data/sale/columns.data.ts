@@ -1,4 +1,6 @@
 import { rupiah } from 'src/serv/currency'
+import { format } from 'date-fns'
+import { id as LocaleID } from 'date-fns/locale'
 
 export const COLUMNS = [
   {
@@ -6,6 +8,17 @@ export const COLUMNS = [
     align: 'left',
     field: 'id',
     label: 'id',
+    required: true,
+  },
+  {
+    name: 'waktu',
+    align: 'left',
+    field: 'createdAt',
+    format: (v: string) => {
+      const d = new Date(v)
+      return format(d, 'd MMMM yyyy', { locale: LocaleID })
+    },
+    label: 'Tanggal',
     required: true,
   },
   {

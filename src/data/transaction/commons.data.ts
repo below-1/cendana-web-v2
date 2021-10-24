@@ -34,3 +34,13 @@ export const TRANSACTION_STATUS_OPTIONS = [
   { label: 'Declined', value: TransactionStatus.DECLINED },
   { label: 'Reject', value: TransactionStatus.REJECTED }
 ]
+
+export enum TransactionType {
+  DEBIT = 'DEBIT',
+  CREDIT = 'CREDIT'
+}
+
+export const TRANSACTION_TYPE_OPTIONS = [
+  { label: 'Pemasukan', value: TransactionType.DEBIT },
+  { label: 'Pengeluaran', value: TransactionType.CREDIT }
+]

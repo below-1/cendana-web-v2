@@ -109,7 +109,7 @@ export default defineComponent({
       let realPayload: any = { ...rest }
       if (needDelay.value) {
         realPayload.delay = {
-          dueDate: addDays(new Date(), elapsedDelay)
+          dueDate: addDays(new Date($order.value.createdAt), elapsedDelay)
         }
       }
       seal($order.value.id, realPayload)
