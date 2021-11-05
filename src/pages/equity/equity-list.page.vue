@@ -37,9 +37,10 @@
                 icon="delete"
                 color="red"
                 flat size="xs"
+                @click="onRemove(props.row.equityChange.id)"
               />
               <q-btn
-                :to="`/app/equity/${props.row.id}/update`"
+                :to="`/app/equity/${props.row.equityChange.id}/update`"
                 icon="edit" 
                 color="primary" 
                 flat 
@@ -66,7 +67,7 @@ import { defineComponent, computed, onMounted } from 'vue'
 import MonthSelect from 'components/month-select.vue'
 import LoadingPane from 'components/loading-pane.vue'
 import Pagination from 'components/pagination.vue'
-import { useFilterEntity } from 'src/compose/entity'
+import { useFilterEntity, useRemoveEntity } from 'src/compose/entity'
 import { COLUMNS } from 'src/data/equity'
 import { currentYearMonth } from 'src/serv/datetime'
 
@@ -98,6 +99,16 @@ export default defineComponent({
       initialParams
     })
 
+    const {
+      result: removeResult,
+      promptRemove
+    } = useRemoveEntity('Perubahan Modal')
+
+    const onRemove = (id: any) => {
+      promptRemove(`/v1/api/equity/${id}`, `#{id}`)
+        .then(() => getEquityChanges())
+    }
+
     onMounted(() => {
       getEquityChanges()
     })
@@ -105,6 +116,8 @@ export default defineComponent({
     return {
       equityChanges,
       params,
+      onRemove,
+      promptRemove,
       COLUMNS
     }
   }

@@ -2,8 +2,9 @@
   <q-page>
     <q-toolbar class="q-px-lg bg-grey-2">
       <q-toolbar-title class="text-weight-bold">
-        Update Perubahan Modal
+        Update Beban Usaha
       </q-toolbar-title>
+      <q-btn flat color="primary" label="tambah" icon="add" />
     </q-toolbar>
     <q-separator/>
     <div class="row flex-center q-my-xl">
@@ -13,22 +14,17 @@
           bordered>
           <q-card-section>
             <q-form ref="form">
-              <q-input
-                label="User"
-                v-model="payload.user"
+              <ocat-options
+                v-model="payload.opex"
+                class="q-mb-md"
+                :rules="[
+                  v => !!v || 'Beban Usaha Harus Diisi'
+                ]"
               />
               <rupiah-input
                 label="Nominal"
                 v-model="payload.nominal"
                 class="q-mb-md"
-              />
-              <q-select
-                label="Tipe Transaksi"
-                v-model="payload.type"
-                :options="TRANSACTION_TYPE_OPTIONS"
-                emit-value
-                class="q-mb-md"
-                :display-value="selectedType"
               />
               <q-select
                 label="Status Transaksi"
@@ -39,7 +35,7 @@
                 :display-value="selectedStatus"
               />
               <q-select
-                label="Metode Pembayaran"
+                label="Status Transaksi"
                 v-model="payload.paymentMethod"
                 :options="PAYMENT_METHOD_OPTIONS"
                 :display-value="selectedPaymentMethod"
@@ -49,12 +45,6 @@
               <datetime-input
                 label="Waktu Transaksi"
                 v-model="payload.createdAt"
-              />
-              <q-input
-                label="Keterangan"
-                type="textarea"
-                v-model="payload.description"
-                class="q-mb-md"
               />
             </q-form>
           </q-card-section>
@@ -86,21 +76,19 @@ import {
 } from 'vue'
 import LoadingPane from 'components/loading-pane.vue'
 import { 
-  defaultDateTime, 
+  defaultDateTime,
   formatDateTime,
   toISO 
 } from 'src/serv/datetime';
 import { 
-  useUpdateEntityV2,
-  useSingleEntity
+  useSingleEntity, 
+  useUpdateEntityV2
 } from 'src/compose/entity'
 import { 
   TransactionStatus, 
   PaymentMethod, 
-  TransactionType,
   TRANSACTION_STATUS_OPTIONS,
-  PAYMENT_METHOD_OPTIONS,
-  TRANSACTION_TYPE_OPTIONS
+  PAYMENT_METHOD_OPTIONS
 } from 'src/data/transaction'
 import OcatOptions from 'components/ocat/ocat-options.vue'
 import RupiahInput from 'components/rupiah-input.vue'
@@ -109,73 +97,64 @@ import { useRouter } from 'vue-router'
 
 function getInitialData(id: string | number) {
   const { 
-    getSingleEntity: getEquityChange
-  } = useSingleEntity('Perubahan Modal')
+    getSingleEntity: getOpex
+  } = useSingleEntity('Beban Usaha')
 
-  return getEquityChange(`/v1/api/equity/${id}`)
+  return getOpex(`/v1/api/opex-trans/${id}`)
 }
 
 export default defineComponent({
-  components: {
-    LoadingPane,
-    OcatOptions,
-    RupiahInput,
-    DatetimeInput
-  },
   props: {
     id: {
       type: String as PropType<string>,
       required: true
     }
   },
+  components: {
+    LoadingPane,
+    OcatOptions,
+    RupiahInput,
+    DatetimeInput
+  },
   setup(props) {
+
     const payload = reactive<any>({
-      user: '',
+      opex: {},
       nominal: '0',
       status: 'SUCCESS',
       paymentMethod: 'ONLINE',
-      type: 'DEBIT',
-      createdAt: defaultDateTime(),
-      description: '',
-      transactionId: 0
+      createdAt: defaultDateTime()
     })
+
+    onMounted(async () => {
+      const data: any = await getInitialData(props.id)
+      payload.opex = data.opex
+      payload.nominal = data.nominal
+      payload.status = data.status
+      payload.paymentMethod = data.paymentMethod
+      payload.createdAt = formatDateTime(new Date(data.createdAt))
+    })
+
     const selectedStatus = computed(() => {
       const selected = TRANSACTION_STATUS_OPTIONS.find((it: any) => it.value == payload.status)
       if (!selected) return '-- pilih status transaksi --'
       return selected.label
     })
+
     const selectedPaymentMethod = computed(() => {
       const selected = PAYMENT_METHOD_OPTIONS.find((it: any) => it.value == payload.paymentMethod)
       if (!selected) return '-- pilih metode pembayaran --'
       return selected.label
     })
-    const selectedType = computed(() => {
-      const selected = TRANSACTION_TYPE_OPTIONS.find((it: any) => it.value == payload.type)
-      if (!selected) return '-- pilih tipe transaksi --'
-      return selected.label
-    })    
 
-    onMounted(async () => {
-      const data: any = await getInitialData(props.id)
-      payload.nominal = data.transaction.nominal
-      payload.type = data.transaction.type
-      payload.status = data.transaction.status
-      payload.paymentMethod = data.transaction.paymentMethod
-      payload.createdAt = formatDateTime(new Date(data.createdAt))
-      payload.user = data.user
-      payload.transactionId = data.transaction.id
-    })
-
-    const user = inject<any>('user')
     const { updateEntity, result } = useUpdateEntityV2({
-      entityName: 'Perubahan Modal',
+      entityName: 'Beban Usaha',
       transform: (p) => {
-        const { createdAt, ...rest } = p
-        const userVal = user.value
+        const { opex, createdAt, ...rest } = p
         return {
           ...rest,
-          createdAt: toISO(createdAt),
-          authorId: userVal.id
+          opexId: opex.id,
+          createdAt: toISO(createdAt)
         }
       }
     })
@@ -191,7 +170,7 @@ export default defineComponent({
       if (!isValid) {
         return
       }
-      await updateEntity('/v1/api/equity/' + props.id, payload)
+      await updateEntity(`/v1/api/opex-trans/${props.id}`, payload)
       router.back()
     }
 
@@ -201,10 +180,8 @@ export default defineComponent({
       payload,
       PAYMENT_METHOD_OPTIONS,
       TRANSACTION_STATUS_OPTIONS,
-      TRANSACTION_TYPE_OPTIONS,
       selectedPaymentMethod,
       selectedStatus,
-      selectedType,
       result
     }
   }
