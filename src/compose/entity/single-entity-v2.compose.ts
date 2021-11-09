@@ -38,7 +38,7 @@ export function useSingleEntityV2<T>(options: Options) {
   const $q = useQuasar();
 
   async function getSingleEntity() {
-    const url = isRef(options.url) ? unref(options.url) : options.url
+    const url = unref(options.url)
     result.value = { type: 'loading' };
     try {
       const response = await api.get<T>(url);
