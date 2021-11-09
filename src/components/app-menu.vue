@@ -6,23 +6,18 @@
   </div>
   <q-list separator>
     <template v-for="menu, i in menus" :key="`app_menu_${i}`">
-      <q-item-label
-        v-if="menu.separator"
-        header
-        class="text-capitalize"
-      >
-        {{ menu.label }}
-      </q-item-label>
       <q-expansion-item
-        v-else-if="menu.children"
+        v-if="menu.children"
         expand-separator
         :icon="menu.icon"
         :label="menu.label"
+        style="text-transform: capitalize;"
       >
-        <q-list>
+        <q-list class="bg-grey-10">
           <q-item v-for="child in menu.children" 
             :key="child.path"
             :to="child.path"
+            class="q-pl-lg"
           >
             <q-item-section avatar>
               <q-icon :name="child.icon" size="sm" />

@@ -5,28 +5,42 @@ export type Menu = HeaderMenu | PathMenu | HasChildren;
 
 export const baseMenus: Menu[] = [
   { path: '/app/dashboard', label: 'dashboard', icon: 'dashboard' },
-  { separator: true, label: 'master' },
-  { path: '/app/pcat', label: 'kategori barang', icon: 'category' },
-  { path: '/app/ocat', label: 'kategori beban operasi', icon: 'category' },
-  { path: '/app/tcat', label: 'kategori Peralatan', icon: 'category' },
-  { path: '/app/invcat', label: 'kategori Investasi', icon: 'category' },
-  { path: '/app/product', label: 'gudang', icon: 'bento' },
-  { path: '/app/supplier', label: 'supplier', icon: 'bento' },
-  { path: '/app/customer', label: 'pelanggan', icon: 'bento' },
-  { separator: true, label: 'transaksi' },
-  { path: '/app/purchase', label: 'pembelian', icon: 'point_of_sale' },
-  { path: '/app/sale', label: 'penjualan', icon: 'point_of_sale' },
-  { path: '/app/opex', label: 'beban usaha', icon: 'rowing' },
-  { path: '/app/tool', label: 'biaya peralatan', icon: 'production_quantity_limits' },
-  { path: '/app/investment', label: 'Investasi', icon: 'rowing' },
-  { path: '/app/equity', label: 'Perubahan Modal', icon: 'rowing' },
-  { separator: true, label: 'Hutang/Piutang' },
-  { path: '/app/delay-payable', label: 'Hutang', icon: 'send_and_archive' },
-  { path: '/app/delay-receivable', label: 'Piutang', icon: 'send_and_archive' }
+  { 
+    label: 'Master', 
+    icon: 'folder',
+    children: [
+      { path: '/app/pcat', label: 'kategori barang', icon: 'category' },
+      { path: '/app/ocat', label: 'kategori beban operasi', icon: 'category' },
+      { path: '/app/tcat', label: 'kategori Peralatan', icon: 'category' },
+      { path: '/app/invcat', label: 'kategori Investasi', icon: 'category' },
+      { path: '/app/product', label: 'gudang', icon: 'bento' },
+      { path: '/app/supplier', label: 'supplier', icon: 'bento' },
+      { path: '/app/customer', label: 'pelanggan', icon: 'bento' }
+    ]
+  },
+  { 
+    label: 'transaksi',
+    icon: 'paid',
+    children: [
+      { path: '/app/purchase', label: 'pembelian', icon: 'point_of_sale' },
+      { path: '/app/sale', label: 'penjualan', icon: 'point_of_sale' },
+      { path: '/app/opex', label: 'beban usaha', icon: 'rowing' },
+      { path: '/app/tool', label: 'biaya peralatan', icon: 'production_quantity_limits' },
+      { path: '/app/investment', label: 'Investasi', icon: 'rowing' },
+      { path: '/app/equity', label: 'Perubahan Modal', icon: 'rowing' },
+    ]
+  },
+  { 
+    label: 'Hutang/Piutang',
+    icon: 'update',
+    children: [
+      { path: '/app/delay-payable', label: 'Hutang', icon: 'send_and_archive' },
+      { path: '/app/delay-receivable', label: 'Piutang', icon: 'send_and_archive' }
+    ]
+  },
 ];
 
 export const adminMenus: Menu[] = [
-  { separator: true, label: 'Lain - Lain' },
   { 
     path: '/app/finance', 
     label: 'laporan keuangan', 
