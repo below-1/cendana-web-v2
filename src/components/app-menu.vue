@@ -13,6 +13,26 @@
       >
         {{ menu.label }}
       </q-item-label>
+      <q-expansion-item
+        v-else-if="menu.children"
+        expand-separator
+        :icon="menu.icon"
+        :label="menu.label"
+      >
+        <q-list>
+          <q-item v-for="child in menu.children" 
+            :key="child.path"
+            :to="child.path"
+          >
+            <q-item-section avatar>
+              <q-icon :name="child.icon" size="sm" />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label class="text-capitalize">{{ child.label }}</q-item-label>
+            </q-item-section>
+          </q-item>
+        </q-list>
+      </q-expansion-item>
       <q-item
         v-else
         :to="menu.path"

@@ -1,6 +1,7 @@
 type HeaderMenu = { separator: true, label: string };
 type PathMenu = { path: string, label: string, icon: string };
-export type Menu = HeaderMenu | PathMenu;
+type HasChildren = { label: string, icon: string; children: PathMenu[] }
+export type Menu = HeaderMenu | PathMenu | HasChildren;
 
 export const baseMenus: Menu[] = [
   { path: '/app/dashboard', label: 'dashboard', icon: 'dashboard' },
@@ -26,7 +27,31 @@ export const baseMenus: Menu[] = [
 
 export const adminMenus: Menu[] = [
   { separator: true, label: 'Lain - Lain' },
-  { path: '/app/staf', label: 'staf', icon: 'person' },
-  { path: '/app/admin', label: 'admin', icon: 'person' },
-  { path: '/app/financial-report', label: 'laporan keuangan', icon: 'bar_chart' },
+  { 
+    path: '/app/finance', 
+    label: 'laporan keuangan', 
+    icon: 'bar_chart',
+    children: [
+      { 
+        label: 'Laba Rugi', 
+        icon: 'sync_alt', 
+        path: '/app/finance/laba_rugi'
+      },
+      { label: 'Neraca', 
+        icon: 'scale',
+        path: '/app/finance/neraca'
+      },
+      { 
+        label: 'Arus Kas', 
+        icon: 'ait', 
+        path: '/app/finance/arus_kas' 
+      }
+    ]
+   },
+  { label: 'user', icon: 'person',
+    children: [
+      { path: '/app/staf', label: 'staf', icon: 'person' },
+      { path: '/app/admin', label: 'admin', icon: 'person' }
+    ]
+  }
 ];

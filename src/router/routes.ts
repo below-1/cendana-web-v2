@@ -130,6 +130,16 @@ const routes: RouteRecordRaw[] = [
         path: 'stock-items/order/:order/add',
         component: () => import('pages/sitem/sitem-add.page.vue'),
         props: true
+      },
+      {
+        path: 'finance',
+        component: () => import('pages/finance/finance-container.page.vue'),
+        children: [
+          { path: '', component: () => import('pages/finance/menu.page.vue') },
+          { path: 'neraca', component: () => import('pages/finance/neraca.page.vue') },
+          { path: 'laba_rugi', component: () => import('pages/finance/laba-rugi.page.vue') },
+          { path: 'arus_kas', component: () => import('pages/finance/arus-kas.page.vue') }
+        ]
       }
     ]
   },
