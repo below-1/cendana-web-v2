@@ -26,6 +26,7 @@ interface SingleLoading {
 interface Options {
   entityName: string;
   url: string | Ref<string>
+  axiosOptions?: any
 }
 
 export function useSingleEntityV2<T>(options: Options) {
@@ -37,22 +38,26 @@ export function useSingleEntityV2<T>(options: Options) {
   const result: Ref<Result> = ref({ type: 'loading' } as SingleLoading);
   const $q = useQuasar();
 
+  let axiosOptions = {}
+  if (options.axiosOptions) {
+    axiosOptions = unref(options.axiosOptions)
+  }
+
   async function getSingleEntity() {
     const url = unref(options.url)
     result.value = { type: 'loading' };
     try {
-      const response = await api.get<T>(url);
+      const response = await api.get<T>(url, axiosOptions);
       const { data } = response;
       result.value = { type: 'result', data };
       return data;
     } catch (err) {
-      console.log(err);
+      result.value = { type: 'error', error: err }
       $q.notify({
         type: 'negative',
         message: `${FAILURE_MESSAGE} ${entityName}`,
         closeBtn: true
       });
-      result.value = { type: 'error', error: err };
     }
   }
 

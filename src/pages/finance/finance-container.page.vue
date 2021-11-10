@@ -3,20 +3,24 @@
     defineComponent, 
     computed, 
     onMounted,
-    reactive
+    reactive,
+    provide
   } from 'vue'
   import { useRouter } from 'vue-router'
   import MonthSelect from 'components/month-select.vue'
+  import { Params } from './types'
 
   export default defineComponent({
     components: {
       MonthSelect
     },
     setup () {
-      const params = reactive({
+      const params = reactive<Params>({
         year: 2021,
         month: 0
       })
+
+      provide('params', params)
 
       const menus = [
         { label: 'Laba Rugi', 
@@ -35,14 +39,9 @@
 
       const router = useRouter()
 
-      function onClickMenu(path) {
-        router.push(`finance/${path}`)
-      }
-
       return {
         params,
-        menus,
-        onClickMenu
+        menus
       }
     }
   })
