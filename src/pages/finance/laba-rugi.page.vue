@@ -1,18 +1,16 @@
 <script lang="ts">
   import { 
     defineComponent,
-    inject,
-    unref,
-    computed,
-    onMounted,
-    watch
+    onMounted
   } from 'vue'
   import LoadingPane from 'components/loading-pane.vue'
+  import ErrorMessage from './error-message.vue'
   import useFinanceReport from './useFinanceReport'
 
   export default defineComponent({
     components: {
-      LoadingPane
+      LoadingPane,
+      ErrorMessage
     },
     setup() {
       const {
@@ -97,7 +95,5 @@
       </tr>
     </tbody>
   </q-markup-table>
-  <div v-else class="bg-grey-2 row items-center justify-center" style="height: 300px;">
-    <h5>{{ errorMessage }}</h5>
-  </div>
+  <error-message v-else :message="errorMessage" />
 </template>
