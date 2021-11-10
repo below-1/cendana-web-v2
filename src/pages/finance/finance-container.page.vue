@@ -15,9 +15,10 @@
       MonthSelect
     },
     setup () {
+      const today = new Date()
       const params = reactive<Params>({
-        year: 2021,
-        month: 0
+        year: today.getFullYear(),
+        month: today.getMonth()
       })
 
       provide('params', params)
