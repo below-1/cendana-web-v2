@@ -8,56 +8,23 @@
     watch
   } from 'vue'
   import LoadingPane from 'components/loading-pane.vue'
-  import { useSingleEntityV2 } from 'src/compose/entity'
-  import { Params } from './types'
-  import fieldsToRupiah from './fieldsToRupiah'
+  import useFinanceReport from './useFinanceReport'
 
   export default defineComponent({
     components: {
       LoadingPane
     },
     setup() {
-      const params = inject<Params>('params')
-      const axiosOptions = computed(() => ({
-        params
-      }))
-
       const {
         result,
-        getSingleEntity: getLabaRugi
-      } = useSingleEntityV2({
-        entityName: 'Laporan Laba Rugi',
-        url: '/v1/api/finance/report',
-        axiosOptions
-      })
-
-      const labaRugi = computed(() => {
-        const resValue = unref(result)
-        if (!resValue || resValue.type !== 'result') {
-          return null
-        }
-        const transformed = fieldsToRupiah(resValue.data)
-        return transformed
-      })
-
-      const errorMessage = computed(() => {
-        const resValue = unref(result)
-        if (resValue.type !== 'error') {
-          return null
-        }
-        const axiosError = (result.value as any).error
-        const errorData = axiosError.response.data
-        const code = errorData.code
-        const message = errorData.message
-        return message
-      })
-
-      watch(errorMessage, (x) => {
-        console.log(x)
+        getSingleEntity: getLabaRugi,
+        transformed: labaRugi,
+        errorMessage
+      } = useFinanceReport({
+        name: 'Laba Rugi'
       })
 
       onMounted(getLabaRugi)
-      watch(params!, getLabaRugi)
 
       return {
         result,
