@@ -59,6 +59,11 @@ export const adminMenus: Menu[] = [
         label: 'Arus Kas', 
         icon: 'ait', 
         path: '/app/finance/arus_kas' 
+      },
+      { 
+        label: 'Perubahan Modal', 
+        icon: 'ait', 
+        path: '/app/finance/perubahan_modal' 
       }
     ]
    },
