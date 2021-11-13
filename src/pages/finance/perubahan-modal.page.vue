@@ -15,9 +15,9 @@
     setup() {
       const {
         result,
+        error,
         getSingleEntity: getPerubahanModal,
-        transformed: perubahanModal,
-        errorMessage
+        transformed: perubahanModal
       } = useFinanceReport({
         name: 'Perubahan Modal'
       })
@@ -27,7 +27,7 @@
       return {
         result,
         perubahanModal,
-        errorMessage
+        error
       }
     }
   })
@@ -78,5 +78,8 @@
       </tr>
     </tbody>
   </q-markup-table>
-  <error-message v-else :message="errorMessage" />
+  <error-message v-else-if="error" 
+    :message="error.message" 
+    :report-not-created="error.code == 'FST_REPORT_NOT_FOUND'"
+  />
 </template>

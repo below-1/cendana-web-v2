@@ -31,16 +31,14 @@ export default function useFinanceReport(reportParams: FinanceReportParams) {
     return transformed
   })
 
-  const errorMessage = computed(() => {
+  const error = computed(() => {
     const resValue = unref(result)
     if (resValue.type !== 'error') {
       return null
     }
     const axiosError = (result.value as any).error
     const errorData = axiosError.response.data
-    const code = errorData.code
-    const message = errorData.message
-    return message
+    return errorData
   })
 
   watch(params!, getSingleEntity)
@@ -49,6 +47,6 @@ export default function useFinanceReport(reportParams: FinanceReportParams) {
     result,
     getSingleEntity,
     transformed,
-    errorMessage
+    error
   }
 }

@@ -17,7 +17,7 @@
         result,
         getSingleEntity: getLabaRugi,
         transformed: labaRugi,
-        errorMessage
+        error
       } = useFinanceReport({
         name: 'Laba Rugi'
       })
@@ -27,7 +27,7 @@
       return {
         result,
         labaRugi,
-        errorMessage
+        error
       }
     }
   })
@@ -95,5 +95,8 @@
       </tr>
     </tbody>
   </q-markup-table>
-  <error-message v-else :message="errorMessage" />
+  <error-message v-else-if="error" 
+    :message="error.message" 
+    :report-not-created="error.code == 'FST_REPORT_NOT_FOUND'"
+  />
 </template>
