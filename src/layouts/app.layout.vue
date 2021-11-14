@@ -1,7 +1,63 @@
+<script lang="ts">
+import { 
+  defineComponent, 
+  ref, 
+  provide,
+  inject,
+  computed
+} from 'vue';
+import { format } from 'date-fns'
+import { id as localeID } from 'date-fns/locale'
+import { User } from 'src/models/user.model';
+import { useRouter } from 'vue-router'
+import { baseMenus, adminMenus } from 'src/data/commons/menu.data';
+import { today } from 'src/serv/datetime'
+import * as appData from 'src/data/commons/app.data';
+import AppMenu from 'components/app-menu.vue';
+
+export default defineComponent({
+  name: 'MainLayout',
+
+  components: {
+    AppMenu,
+  },
+
+  setup() {
+    const leftDrawerOpen = ref(false);
+    const leftDrawerMini = ref(false);
+    const user = inject<User>('user');
+    const router = useRouter()
+
+    const formattedToday = computed(() => {
+      const now = today()
+      return format(now, 'eeee, d MMMM yyyy', { locale: localeID })
+    })
+
+    function logout() {
+      localStorage.removeItem('token')
+      router.replace('/')
+    }
+
+    return {
+      leftDrawerOpen,
+      leftDrawerMini,
+      toggleLeftDrawer() {
+        leftDrawerMini.value = !leftDrawerMini.value;
+      },
+      adminMenus,
+      baseMenus,
+      data: appData,
+      user,
+      logout
+    };
+  },
+});
+</script>
+
 <template>
-  <q-layout view="lHh Lpr lFf">
+  <q-layout view="hHh Lpr lFf">
     <q-header>
-      <q-toolbar class="bg-white text-dark" style="border-bottom: 1px solid #eee;">
+      <q-toolbar class="bg-purple-10 text-white">
         <q-btn
           flat
           dense
@@ -9,8 +65,10 @@
           icon="menu"
           aria-label="Menu"
           @click="toggleLeftDrawer"
-        />  
-        <div class="text-overline" style="line-height: unset;">{{formattedToday}}</div>
+        />
+        <q-toolbar-title class="font-weight-bold">
+          UD. Cendana
+        </q-toolbar-title>
         <q-space/>
 
         <q-btn-dropdown flat icon="person" :label="user.first_name">
@@ -41,9 +99,8 @@
     </q-header>
 
     <q-drawer
-      v-model="leftDrawerOpen"
+      :mini="leftDrawerMini"
       show-if-above
-      bordered
       dark
     >
       <AppMenu
@@ -57,58 +114,3 @@
     </q-page-container>
   </q-layout>
 </template>
-
-<script lang="ts">
-import { 
-  defineComponent, 
-  ref, 
-  inject,
-  computed
-} from 'vue';
-import { format } from 'date-fns'
-import { id as localeID } from 'date-fns/locale'
-import { User } from 'src/models/user.model';
-import { baseMenus, adminMenus } from 'src/data/commons/menu.data';
-import { useRouter } from 'vue-router'
-import * as appData from 'src/data/commons/app.data';
-import AppMenu from 'components/app-menu.vue';
-
-export default defineComponent({
-  name: 'MainLayout',
-
-  components: {
-    AppMenu,
-  },
-
-  setup() {
-    const leftDrawerOpen = ref(false);
-    const leftDrawerMini = ref(false);
-    const user = inject<User>('user');
-    const router = useRouter()
-
-    const formattedToday = computed(() => {
-      const now = new Date()
-      return format(now, 'eeee, d MMMM yyyy', { locale: localeID })
-    })
-
-    function logout() {
-      localStorage.removeItem('token')
-      router.replace('/')
-    }
-
-    return {
-      leftDrawerOpen,
-      leftDrawerMini,
-      toggleLeftDrawer() {
-        leftDrawerOpen.value = !leftDrawerOpen.value;
-      },
-      adminMenus,
-      baseMenus,
-      data: appData,
-      user,
-      logout,
-      formattedToday
-    };
-  },
-});
-</script>

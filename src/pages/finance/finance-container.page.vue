@@ -9,16 +9,17 @@
   import { useRouter } from 'vue-router'
   import MonthSelect from 'components/month-select.vue'
   import { Params } from './types'
+  import { today } from 'src/serv/datetime'
 
   export default defineComponent({
     components: {
       MonthSelect
     },
     setup () {
-      const today = new Date()
+      const now = today()
       const params = reactive<Params>({
-        year: today.getFullYear(),
-        month: today.getMonth()
+        year: now.getFullYear(),
+        month: now.getMonth()
       })
 
       provide('params', params)
