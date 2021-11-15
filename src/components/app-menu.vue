@@ -25,6 +25,10 @@ function useMenus(role: Ref<string>, baseMenus: Ref<Menu[]>, adminMenus: Ref<Men
 
 export default defineComponent({
   props: {
+    mini: {
+      type: Boolean,
+      required: true,
+    },
     role: {
       type: String,
       required: true,
@@ -63,41 +67,46 @@ export default defineComponent({
     <div class="text-overline" style="line-height: unset;">{{formattedToday}}</div>
   </div>
   <q-separator/> -->
-  <q-list>
-    <template v-for="menu, i in menus" :key="`app_menu_${i}`">
-      <q-expansion-item
-        v-if="menu.children"
-        expand-separator
-        :icon="menu.icon"
-        :label="menu.label"
-        style="text-transform: capitalize;"
-      >
-        <q-list>
-          <q-item v-for="child in menu.children" 
-            :key="child.path"
-            :to="child.path"
-            class="q-pl-lg"
-          >
-            <q-item-section avatar>
-              <q-icon :name="child.icon" size="sm" />
-            </q-item-section>
-            <q-item-section>
-              <q-item-label class="text-capitalize">{{ child.label }}</q-item-label>
-            </q-item-section>
-          </q-item>
-        </q-list>
-      </q-expansion-item>
-      <q-item
-        v-else
-        :to="menu.path"
-      >
-        <q-item-section avatar>
-          <q-icon :name="menu.icon" size="sm" />
-        </q-item-section>
-        <q-item-section>
-          <q-item-label class="text-capitalize">{{ menu.label }}</q-item-label>
-        </q-item-section>
-      </q-item>
-    </template>
-  </q-list>
+  <q-drawer
+    :mini="mini"
+    show-if-above
+    dark
+  >
+    <q-list class="text-weight-bold">
+      <template v-for="menu, i in menus" :key="`app_menu_${i}`">
+        <q-expansion-item
+          v-if="menu.children"
+          expand-separator
+          :icon="menu.icon"
+          :label="menu.label"
+          style="text-transform: capitalize;"
+        >
+          <q-list class="bg-black">
+            <q-item v-for="child in menu.children" 
+              :key="child.path"
+              :to="child.path"
+            >
+              <q-item-section avatar>
+                <q-icon :name="child.icon" size="sm" />
+              </q-item-section>
+              <q-item-section>
+                <q-item-label class="text-capitalize">{{ child.label }}</q-item-label>
+              </q-item-section>
+            </q-item>
+          </q-list>
+        </q-expansion-item>
+        <q-item
+          v-else
+          :to="menu.path"
+        >
+          <q-item-section avatar>
+            <q-icon :name="menu.icon" size="sm" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label class="text-capitalize">{{ menu.label }}</q-item-label>
+          </q-item-section>
+        </q-item>
+      </template>
+    </q-list>
+  </q-drawer>
 </template>

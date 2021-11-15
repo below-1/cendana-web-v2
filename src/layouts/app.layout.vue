@@ -99,16 +99,11 @@ export default defineComponent({
       </q-toolbar>
     </q-header>
 
-    <q-drawer
+    <AppMenu
       :mini="leftDrawerMini"
-      show-if-above
-      dark
-    >
-      <AppMenu
-        :baseMenus="baseMenus"
-        :adminMenus="adminMenus"
-        :role="user.role"/>
-    </q-drawer>
+      :baseMenus="baseMenus"
+      :adminMenus="adminMenus"
+      :role="user.role"/>
 
     <q-page-container>
       <router-view />
