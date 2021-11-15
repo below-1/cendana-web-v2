@@ -7,19 +7,19 @@
       </q-toolbar-title>
       <q-btn flat color="primary" label="tambah" icon="add" :to="CREATE_URL" />
     </q-toolbar>
-    <q-separator/>
 
-    <div class="q-px-lg flex q-py-md">
-      <q-input dense placeholder="keyword..." v-model="params.keyword" class="q-mr-md" />
-      <month-select 
-        v-model:year="params.year"
-        v-model:month="params.month"
-      />
-    </div>
+    <q-separator/>
+    <filter-toolbar
+      v-model:year="params.year"
+      v-model:month="params.month"
+      v-model:keyword="params.keyword"
+      :total-data="listResult.totalData"
+    />
+    <q-separator/>
 
     <loading-pane v-if="showLoading" />
 
-    <section v-else class="q-px-lg">
+    <section v-else>
       <q-table
         flat
         hide-pagination
@@ -88,6 +88,7 @@
 <script lang="ts">
 import { defineComponent, computed, onMounted } from 'vue';
 import { useFilterEntity, useListEntity, useRemoveEntity } from 'src/compose/entity';
+import FilterToolbar from 'components/transaction/filter-toolbar.vue'
 import LoadingPane from 'components/loading-pane.vue';
 import OrderStatusChip from 'components/order/order-status-chip.vue'
 import MonthSelect from 'components/month-select.vue'
@@ -101,6 +102,7 @@ import { currentYearMonth } from 'src/serv/datetime'
 
 export default defineComponent({
   components: {
+    FilterToolbar,
     LoadingPane,
     MonthSelect,
     OrderStatusChip,

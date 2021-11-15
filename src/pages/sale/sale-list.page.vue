@@ -6,17 +6,14 @@
       </q-toolbar-title>
       <q-btn flat color="primary" label="tambah" icon="add" :to="createURL" />
     </q-toolbar>
-
+    
     <q-separator/>
-
-    <div class="q-px-lg flex q-py-md">
-      <q-input dense filled placeholder="keyword..." v-model="params.keyword" class="q-mr-md" />
-      <month-select 
-        v-model:year="params.year"
-        v-model:month="params.month"
-      />
-    </div>
-
+    <filter-toolbar
+      v-model:year="params.year"
+      v-model:month="params.month"
+      v-model:keyword="params.keyword"
+      :total-data="sales.totalData"
+    />
     <q-separator/>
 
     <loading-pane v-if="sales.type == 'loading'" />
@@ -78,8 +75,13 @@
 
 <script lang="ts">
 import { defineComponent, onMounted } from 'vue'
-import { ENTITY_NAME, BASE_APP_URL, BASE_API_URL, COLUMNS } from 'src/data/sale'
-import MonthSelect from 'components/month-select.vue'
+import { 
+  ENTITY_NAME, 
+  BASE_APP_URL, 
+  BASE_API_URL, 
+  COLUMNS 
+} from 'src/data/sale'
+import FilterToolbar from 'components/transaction/filter-toolbar.vue'
 import LoadingPane from 'components/loading-pane.vue'
 import Pagination from 'components/pagination.vue'
 import { useFilterEntity, useRemoveEntity } from 'src/compose/entity'
@@ -87,7 +89,7 @@ import { currentYearMonth } from 'src/serv/datetime'
 
 export default defineComponent({
   components: {
-    MonthSelect,
+    FilterToolbar,
     LoadingPane,
     Pagination,
   },

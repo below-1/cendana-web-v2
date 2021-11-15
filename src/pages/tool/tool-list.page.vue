@@ -12,14 +12,16 @@
         label="tambah" 
         icon="add" />
     </q-toolbar>
+    
     <q-separator/>
-    <div class="q-px-lg flex q-py-md">
-      <q-input dense placeholder="keyword..." v-model="params.keyword" class="q-mr-md" />
-      <month-select 
-        v-model:year="params.year"
-        v-model:month="params.month"
-      />
-    </div>
+    <filter-toolbar
+      v-model:year="params.year"
+      v-model:month="params.month"
+      v-model:keyword="params.keyword"
+      :total-data="tools.totalData"
+    />
+    <q-separator/>
+
     <loading-pane v-if="tools.type == 'loading'" />
     <template v-else-if="tools.type == 'data'">
       <section>
@@ -62,7 +64,7 @@
 
 <script lang="ts">
 import { defineComponent, computed, onMounted } from 'vue'
-import MonthSelect from 'components/month-select.vue'
+import FilterToolbar from 'components/transaction/filter-toolbar.vue'
 import LoadingPane from 'components/loading-pane.vue'
 import Pagination from 'components/pagination.vue'
 import { useFilterEntity } from 'src/compose/entity'
@@ -73,7 +75,7 @@ export default defineComponent({
   components: {
     LoadingPane,
     Pagination,
-    MonthSelect
+    FilterToolbar
   },
   setup() {
     const {
