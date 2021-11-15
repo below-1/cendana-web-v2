@@ -10,7 +10,7 @@
     <q-separator/>
 
     <div class="q-px-lg flex q-py-md">
-      <q-input dense placeholder="keyword..." v-model="params.keyword" class="q-mr-md" />
+      <q-input dense filled placeholder="keyword..." v-model="params.keyword" class="q-mr-md" />
       <month-select 
         v-model:year="params.year"
         v-model:month="params.month"

@@ -57,16 +57,17 @@ export default defineComponent({
 <template>
   <q-layout view="hHh Lpr lFf">
     <q-header>
-      <q-toolbar class="bg-purple-10 text-white">
+      <q-toolbar class="bg-white text-dark shadow-2 q-py-none">
         <q-btn
           flat
           dense
           round
-          icon="menu"
           aria-label="Menu"
           @click="toggleLeftDrawer"
-        />
-        <q-toolbar-title class="font-weight-bold">
+        >
+          <q-icon name="img:logo.svg"></q-icon>
+        </q-btn>
+        <q-toolbar-title class="text-weight-bolder">
           UD. Cendana
         </q-toolbar-title>
         <q-space/>
