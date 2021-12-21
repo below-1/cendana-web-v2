@@ -12,21 +12,23 @@
         label="tambah" 
         icon="add" />
     </q-toolbar>
+
     <q-separator/>
-    <div class="q-px-lg flex q-py-md">
-      <q-input dense placeholder="keyword..." v-model="params.keyword" class="q-mr-md" />
-      <month-select 
-        v-model:year="params.year"
-        v-model:month="params.month"
-      />
-    </div>
-    <loading-pane v-if="tools.type == 'loading'" />
-    <template v-else-if="tools.type == 'data'">
+    <filter-toolbar
+      v-model:year="params.year"
+      v-model:month="params.month"
+      v-model:keyword="params.keyword"
+      :total-data="investment.totalData"
+    />
+    <q-separator/>
+
+    <loading-pane v-if="investment.type == 'loading'" />
+    <template v-else-if="investment.type == 'data'">
       <section>
         <q-table
           hide-pagination
           :columns="COLUMNS"
-          :rows="tools.items"
+          :rows="investment.items"
           :rows-per-page-options="[0]"
           flat
         >
@@ -52,7 +54,7 @@
           <pagination
             v-model:page="params.page"
             v-model:per-page="params.perPage"
-            :total-page="tools.totalPage"
+            :total-page="investment.totalPage"
           />
         </q-toolbar>
       </section>
@@ -62,7 +64,7 @@
 
 <script lang="ts">
 import { defineComponent, computed, onMounted } from 'vue'
-import MonthSelect from 'components/month-select.vue'
+import FilterToolbar from 'components/transaction/filter-toolbar.vue'
 import LoadingPane from 'components/loading-pane.vue'
 import Pagination from 'components/pagination.vue'
 import { useFilterEntity } from 'src/compose/entity'
@@ -73,7 +75,7 @@ export default defineComponent({
   components: {
     LoadingPane,
     Pagination,
-    MonthSelect
+    FilterToolbar
   },
   setup() {
     const {
@@ -85,12 +87,12 @@ export default defineComponent({
       year,
       month,
       keyword: '',
-      type: 'TOOL'
+      type: 'INVESTMENT'
     }
     const {
       params,
-      result: tools,
-      getEntities: getTools
+      result: investment,
+      getEntities: getInvestment
     } = useFilterEntity({
       name: 'Biaya Peralatan',
       url: '/v1/api/transactions',
@@ -98,11 +100,11 @@ export default defineComponent({
     })
 
     onMounted(() => {
-      getTools()
+      getInvestment()
     })
 
     return {
-      tools,
+      investment,
       params,
       COLUMNS
     }

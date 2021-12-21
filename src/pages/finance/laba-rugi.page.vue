@@ -66,7 +66,7 @@
           Jumlah Beban Usaha
         </td>
         <td class="text-left">
-          {{ labaRugi.labaKotor }}
+          {{ labaRugi.opex }}
         </td>
       </tr>
       <tr>

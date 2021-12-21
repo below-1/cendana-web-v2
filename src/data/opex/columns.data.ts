@@ -33,7 +33,7 @@ export const COLUMNS = [
     align: 'left',
     field: 'nominal',
     format: rupiah,
-    label: 'Mominal',
+    label: 'Nominal',
     required: true,
   },
   {

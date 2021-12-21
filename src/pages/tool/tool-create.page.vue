@@ -75,7 +75,7 @@ import {
 import LoadingPane from 'components/loading-pane.vue'
 import { 
   defaultDateTime, 
-  toISO 
+  toISO
 } from 'src/serv/datetime';
 import { useCreateEntityV2 } from 'src/compose/entity'
 import { 
