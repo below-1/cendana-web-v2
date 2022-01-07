@@ -130,6 +130,14 @@
         </td>
       </tr>
       <tr>
+        <td class="text-left text-weight-bold">
+          Jumlah Aktiva
+        </td>
+        <td class="text-left">
+          {{ neraca.aktiva }}
+        </td>
+      </tr>
+      <tr>
         <th class="text-left" colspan="2">
           <div style="height: 10px;"></div>
         </th>
